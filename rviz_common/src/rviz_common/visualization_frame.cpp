@@ -105,12 +105,12 @@ VisualizationFrame::VisualizationFrame(
   app_(nullptr),
   render_panel_(nullptr),
   show_help_action_(nullptr),
-  file_menu_(nullptr),
-  recent_configs_menu_(nullptr),
-  toolbar_(nullptr),
+  //file_menu_(nullptr),
+  //recent_configs_menu_(nullptr),
+  //toolbar_(nullptr),
   manager_(nullptr),
   splash_(nullptr),
-  toolbar_actions_(nullptr),
+  //toolbar_actions_(nullptr),
   show_choose_new_master_option_(false),
   panel_factory_(nullptr),
   add_tool_action_(nullptr),
@@ -120,7 +120,7 @@ VisualizationFrame::VisualizationFrame(
   loading_(false),
   post_load_timer_(new QTimer(this)),
   frame_count_(0),
-  toolbar_visible_(true),
+  //toolbar_visible_(true),
   rviz_ros_node_(rviz_ros_node)
 {
   setObjectName("VisualizationFrame");
@@ -301,7 +301,7 @@ void VisualizationFrame::initialize(
   // Periodically process events for the splash screen.
   QCoreApplication::processEvents();
 
-  initToolbars();
+  //initToolbars();
 
   // Periodically process events for the splash screen.
   QCoreApplication::processEvents();
@@ -332,8 +332,8 @@ void VisualizationFrame::initialize(
 
   connect(manager_, SIGNAL(configChanged()), this, SLOT(setDisplayConfigModified()));
   connect(manager_, SIGNAL(escapePressed()), this, SLOT(exitFullScreen()));
-  connect(tool_man, SIGNAL(toolAdded(Tool*)), this, SLOT(addTool(Tool*)));
-  connect(tool_man, SIGNAL(toolRemoved(Tool*)), this, SLOT(removeTool(Tool*)));
+  //connect(tool_man, SIGNAL(toolAdded(Tool*)), this, SLOT(addTool(Tool*)));
+  //connect(tool_man, SIGNAL(toolRemoved(Tool*)), this, SLOT(removeTool(Tool*)));
   connect(tool_man, SIGNAL(toolRefreshed(Tool*)), this, SLOT(refreshTool(Tool*)));
   connect(tool_man, SIGNAL(toolChanged(Tool*)), this, SLOT(indicateToolIsCurrent(Tool*)));
 
@@ -446,90 +446,90 @@ void VisualizationFrame::savePersistentSettings()
 
 void VisualizationFrame::initMenus()
 {
-  file_menu_ = menuBar()->addMenu("&File");
+  //file_menu_ = menuBar()->addMenu("&File");
 
-  QAction * file_menu_open_action = file_menu_->addAction(
-    "&Open Config", this, SLOT(
-      onOpen()), QKeySequence("Ctrl+O"));
-  this->addAction(file_menu_open_action);
-  QAction * file_menu_save_action = file_menu_->addAction(
-    "&Save Config", this, SLOT(
-      onSave()), QKeySequence("Ctrl+S"));
-  this->addAction(file_menu_save_action);
-  QAction * file_menu_save_as_action =
-    file_menu_->addAction(
-    "Save Config &As", this, SLOT(onSaveAs()),
-    QKeySequence("Ctrl+Shift+S"));
-  this->addAction(file_menu_save_as_action);
+  //QAction * file_menu_open_action = file_menu_->addAction(
+  //  "&Open Config", this, SLOT(
+  //    onOpen()), QKeySequence("Ctrl+O"));
+  //this->addAction(file_menu_open_action);
+  //QAction * file_menu_save_action = file_menu_->addAction(
+  //  "&Save Config", this, SLOT(
+  //    onSave()), QKeySequence("Ctrl+S"));
+  //this->addAction(file_menu_save_action);
+  //QAction * file_menu_save_as_action =
+  //  file_menu_->addAction(
+  //  "Save Config &As", this, SLOT(onSaveAs()),
+  //  QKeySequence("Ctrl+Shift+S"));
+  //this->addAction(file_menu_save_as_action);
 
-  recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
-  file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
-  if (show_choose_new_master_option_) {
-    file_menu_->addSeparator();
-    file_menu_->addAction("Change &Master", this, SLOT(changeMaster()));
-  }
-  file_menu_->addSeparator();
-
-  QAction * file_menu_quit_action = file_menu_->addAction(
-    "&Quit", this, SLOT(
-      close()), QKeySequence("Ctrl+Q"));
-  this->addAction(file_menu_quit_action);
+  //recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
+  //file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
+  //if (show_choose_new_master_option_) {
+  //  file_menu_->addSeparator();
+  //  file_menu_->addAction("Change &Master", this, SLOT(changeMaster()));
+  //}
+  //file_menu_->addSeparator();
+  
+  //QAction * file_menu_quit_action = file_menu_->addAction(
+  //  "&Quit", this, SLOT(
+  //close()), QKeySequence("Ctrl+Q"));
+  //this->addAction(file_menu_quit_action);
 
   view_menu_ = menuBar()->addMenu("&Panels");
-  view_menu_->addAction("Add &New Panel", this, SLOT(openNewPanelDialog()));
-  delete_view_menu_ = view_menu_->addMenu("&Delete Panel");
-  delete_view_menu_->setEnabled(false);
+  //view_menu_->addAction("Add &New Panel", this, SLOT(openNewPanelDialog()));
+  //delete_view_menu_ = view_menu_->addMenu("&Delete Panel");
+  //delete_view_menu_->setEnabled(false);
 
-  QAction * fullscreen_action = view_menu_->addAction(
-    "&Fullscreen", this, SLOT(
-      setFullScreen(bool)), Qt::Key_F11);
-  fullscreen_action->setCheckable(true);
-  this->addAction(fullscreen_action);  // Also add to window, or the shortcut doest work
-                                       // when the menu is hidden.
-  connect(this, SIGNAL(fullScreenChange(bool)), fullscreen_action, SLOT(setChecked(bool)));
+  //QAction * fullscreen_action = view_menu_->addAction(
+  //  "&Fullscreen", this, SLOT(
+  //    setFullScreen(bool)), Qt::Key_F11);
+  //fullscreen_action->setCheckable(true);
+  //this->addAction(fullscreen_action);  // Also add to window, or the shortcut doest work
+  //                                     // when the menu is hidden.
+  //connect(this, SIGNAL(fullScreenChange(bool)), fullscreen_action, SLOT(setChecked(bool)));
   view_menu_->addSeparator();
 
-  QMenu * help_menu = menuBar()->addMenu("&Help");
-  help_menu->addAction("Show &Help panel", this, SLOT(showHelpPanel()));
-  help_menu->addSeparator();
-  help_menu->addAction("&About", this, SLOT(onHelpAbout()));
+  //QMenu * help_menu = menuBar()->addMenu("&Help");
+  //help_menu->addAction("Show &Help panel", this, SLOT(showHelpPanel()));
+  //help_menu->addSeparator();
+  //help_menu->addAction("&About", this, SLOT(onHelpAbout()));
 }
 
-void VisualizationFrame::initToolbars()
-{
-  QFont font;
-  font.setPointSize(font.pointSizeF() * 0.9);
-
-  // make toolbar with plugin tools
-
-  toolbar_ = addToolBar("Tools");
-  toolbar_->setFont(font);
-  toolbar_->setContentsMargins(0, 0, 0, 0);
-  toolbar_->setObjectName("Tools");
-  toolbar_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  toolbar_actions_ = new QActionGroup(this);
-  connect(
-    toolbar_actions_, SIGNAL(triggered(QAction*)), this,
-    SLOT(onToolbarActionTriggered(QAction*)));
-  view_menu_->addAction(toolbar_->toggleViewAction());
-
-  add_tool_action_ = new QAction("", toolbar_actions_);
-  add_tool_action_->setToolTip("Add a new tool");
-  add_tool_action_->setIcon(loadPixmap("package://rviz_common/icons/plus.png"));
-  toolbar_->addAction(add_tool_action_);
-  connect(add_tool_action_, SIGNAL(triggered()), this, SLOT(openNewToolDialog()));
-
-  remove_tool_menu_ = new QMenu();
-  QToolButton * remove_tool_button = new QToolButton();
-  remove_tool_button->setMenu(remove_tool_menu_);
-  remove_tool_button->setPopupMode(QToolButton::InstantPopup);
-  remove_tool_button->setToolTip("Remove a tool from the toolbar");
-  remove_tool_button->setIcon(loadPixmap("package://rviz_common/icons/minus.png"));
-  toolbar_->addWidget(remove_tool_button);
-  connect(
-    remove_tool_menu_, SIGNAL(triggered(QAction*)), this, SLOT(
-      onToolbarRemoveTool(QAction*)));
-}
+//void VisualizationFrame::initToolbars()
+//{
+//  QFont font;
+//  font.setPointSize(font.pointSizeF() * 0.9);
+//
+//  // make toolbar with plugin tools
+//
+//  toolbar_ = addToolBar("Tools");
+//  toolbar_->setFont(font);
+//  toolbar_->setContentsMargins(0, 0, 0, 0);
+//  toolbar_->setObjectName("Tools");
+//  toolbar_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+//  toolbar_actions_ = new QActionGroup(this);
+//  connect(
+//    toolbar_actions_, SIGNAL(triggered(QAction*)), this,
+//    SLOT(onToolbarActionTriggered(QAction*)));
+//  view_menu_->addAction(toolbar_->toggleViewAction());
+//
+//  add_tool_action_ = new QAction("", toolbar_actions_);
+//  add_tool_action_->setToolTip("Add a new tool");
+//  add_tool_action_->setIcon(loadPixmap("package://rviz_common/icons/plus.png"));
+//  toolbar_->addAction(add_tool_action_);
+//  connect(add_tool_action_, SIGNAL(triggered()), this, SLOT(openNewToolDialog()));
+//
+//  remove_tool_menu_ = new QMenu();
+//  QToolButton * remove_tool_button = new QToolButton();
+//  remove_tool_button->setMenu(remove_tool_menu_);
+//  remove_tool_button->setPopupMode(QToolButton::InstantPopup);
+//  remove_tool_button->setToolTip("Remove a tool from the toolbar");
+//  remove_tool_button->setIcon(loadPixmap("package://rviz_common/icons/minus.png"));
+//  toolbar_->addWidget(remove_tool_button);
+//  connect(
+//    remove_tool_menu_, SIGNAL(triggered(QAction*)), this, SLOT(
+//      onToolbarRemoveTool(QAction*)));
+//}
 
 void VisualizationFrame::hideDockImpl(Qt::DockWidgetArea area, bool hide)
 {
@@ -624,6 +624,7 @@ void VisualizationFrame::openNewToolDialog()
   activateWindow();  // Force keyboard focus back on main window.
 }
 
+/*
 void VisualizationFrame::updateRecentConfigMenu()
 {
   recent_configs_menu_->clear();
@@ -650,6 +651,7 @@ void VisualizationFrame::updateRecentConfigMenu()
     }
   }
 }
+*/
 
 void VisualizationFrame::markRecentConfig(const std::string & path)
 {
@@ -664,7 +666,7 @@ void VisualizationFrame::markRecentConfig(const std::string & path)
     recent_configs_.pop_back();
   }
 
-  updateRecentConfigMenu();
+  //updateRecentConfigMenu();
 }
 
 void VisualizationFrame::loadDisplayConfig(const QString & qpath)
@@ -747,34 +749,7 @@ void VisualizationFrame::setDisplayTitleFormat(const QString & title_format)
 void VisualizationFrame::setDisplayConfigFile(const std::string & path)
 {
   display_config_file_ = path;
-  std::string title;
-
-  if (display_title_format_.empty()) {
-    if (path == default_display_config_file_) {
-      title = "RViz[*]";
-    } else {
-      title = QDir::toNativeSeparators(QString::fromStdString(path)).toStdString() + "[*] - RViz";
-    }
-  } else {
-    auto find_and_replace_token =
-      [](std::string & title, const std::string & token, const std::string & replacement)
-      {
-        std::size_t found = title.find(token);
-        if (found != std::string::npos) {
-          title.replace(found, token.length(), replacement);
-        }
-      };
-    title = display_title_format_;
-    std::filesystem::path full_filename(path.c_str());
-    find_and_replace_token(
-      title, "{NAMESPACE}",
-      rviz_ros_node_.lock()->get_raw_node()->get_namespace());
-    find_and_replace_token(title, "{CONFIG_PATH}", full_filename.parent_path().string());
-    find_and_replace_token(title, "{CONFIG_FILENAME}", full_filename.filename().string());
-    if (title.find("[*]") == std::string::npos) {
-      title.append("[*]");
-    }
-  }
+  std::string title = "Rivelin Netshape";
 
   setWindowTitle(QString::fromStdString(title));
 }
@@ -1066,22 +1041,22 @@ void VisualizationFrame::onRecentConfigSelected()
   }
 }
 
-void VisualizationFrame::addTool(Tool * tool)
-{
-  QAction * action = new QAction(tool->getName(), toolbar_actions_);
-  action->setIcon(tool->getIcon());
-  action->setIconText(tool->getName());
-  action->setCheckable(true);
-  toolbar_->insertAction(add_tool_action_, action);
-  action_to_tool_map_[action] = tool;
-  tool_to_action_map_[tool] = action;
-
-  remove_tool_menu_->addAction(tool->getName());
-
-  QObject::connect(
-    tool, &Tool::nameChanged, this,
-    &VisualizationFrame::VisualizationFrame::onToolNameChanged);
-}
+//void VisualizationFrame::addTool(Tool * tool)
+//{
+//  QAction * action = new QAction(tool->getName(), toolbar_actions_);
+//  action->setIcon(tool->getIcon());
+//  action->setIconText(tool->getName());
+//  action->setCheckable(true);
+//  toolbar_->insertAction(add_tool_action_, action);
+//  action_to_tool_map_[action] = tool;
+//  tool_to_action_map_[tool] = action;
+//
+//  remove_tool_menu_->addAction(tool->getName());
+//
+//  QObject::connect(
+//    tool, &Tool::nameChanged, this,
+//    &VisualizationFrame::VisualizationFrame::onToolNameChanged);
+//}
 
 void VisualizationFrame::onToolNameChanged(const QString & name)
 {
@@ -1116,25 +1091,25 @@ void VisualizationFrame::onToolbarRemoveTool(QAction * remove_tool_menu_action)
   }
 }
 
-void VisualizationFrame::removeTool(Tool * tool)
-{
-  QAction * action = tool_to_action_map_[tool];
-  if (action) {
-    toolbar_actions_->removeAction(action);
-    toolbar_->removeAction(action);
-    tool_to_action_map_.erase(tool);
-    action_to_tool_map_.erase(action);
-  }
-  QString tool_name = tool->getName();
-  QList<QAction *> remove_tool_actions = remove_tool_menu_->actions();
-  for (int i = 0; i < remove_tool_actions.size(); i++) {
-    QAction * removal_action = remove_tool_actions.at(i);
-    if (removal_action->text() == tool_name) {
-      remove_tool_menu_->removeAction(removal_action);
-      break;
-    }
-  }
-}
+//void VisualizationFrame::removeTool(Tool * tool)
+//{
+//  QAction * action = tool_to_action_map_[tool];
+//  if (action) {
+//    toolbar_actions_->removeAction(action);
+//    toolbar_->removeAction(action);
+//    tool_to_action_map_.erase(tool);
+//    action_to_tool_map_.erase(action);
+//  }
+//  QString tool_name = tool->getName();
+//  QList<QAction *> remove_tool_actions = remove_tool_menu_->actions();
+//  for (int i = 0; i < remove_tool_actions.size(); i++) {
+//    QAction * removal_action = remove_tool_actions.at(i);
+//    if (removal_action->text() == tool_name) {
+//      remove_tool_menu_->removeAction(removal_action);
+//      break;
+//    }
+//  }
+//}
 
 void VisualizationFrame::refreshTool(Tool * tool)
 {
@@ -1206,11 +1181,11 @@ void VisualizationFrame::onDeletePanel()
         custom_panels_.removeAt(i);
         setDisplayConfigModified();
         action->deleteLater();
-        if (delete_view_menu_->actions().size() == 1 &&
-          delete_view_menu_->actions().first() == action)
-        {
-          delete_view_menu_->setEnabled(false);
-        }
+        //if (delete_view_menu_->actions().size() == 1 &&
+        //  delete_view_menu_->actions().first() == action)
+        //{
+        //  delete_view_menu_->setEnabled(false);
+        //}
         return;
       }
     }
@@ -1226,11 +1201,11 @@ void VisualizationFrame::setFullScreen(bool full_screen)
   Q_EMIT (fullScreenChange(full_screen));
 
   // When switching to fullscreen, remember visibility state of toolbar
-  if (full_screen) {
-    toolbar_visible_ = toolbar_->isVisible();
-  }
+  //if (full_screen) {
+  //  toolbar_visible_ = toolbar_->isVisible();
+  //}
   menuBar()->setVisible(!full_screen);
-  toolbar_->setVisible(!full_screen && toolbar_visible_);
+  //toolbar_->setVisible(!full_screen && toolbar_visible_);
   statusBar()->setVisible(!full_screen);
   setHideButtonVisibility(!full_screen);
 
@@ -1265,9 +1240,9 @@ QDockWidget * VisualizationFrame::addPanelByName(
   record.dock = addPane(name, panel, area, floating);
   record.panel = panel;
   record.name = name;
-  record.delete_action = delete_view_menu_->addAction(name, this, SLOT(onDeletePanel()));
+  //record.delete_action = delete_view_menu_->addAction(name, this, SLOT(onDeletePanel()));
   custom_panels_.append(record);
-  delete_view_menu_->setEnabled(true);
+  //delete_view_menu_->setEnabled(true);
 
   record.panel->initialize(manager_);
 

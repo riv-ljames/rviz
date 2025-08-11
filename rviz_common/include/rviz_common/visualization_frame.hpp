@@ -307,15 +307,15 @@ protected Q_SLOTS:
    * When the action is triggered by the toolbar or by the shortcut key,
    * onToolbarActionTriggered() is called.
    */
-  void
-  addTool(Tool * tool);
+  //void
+  //addTool(Tool * tool);
 
   /// React to name changes of a tool, updating the name of the associated QAction
   void onToolNameChanged(const QString & name);
 
   /// Remove the given tool from the frame's toolbar.
-  void
-  removeTool(Tool * tool);
+  //void
+  //removeTool(Tool * tool);
 
   /// Refresh the given tool in this frame's toolbar.
   /**
@@ -390,8 +390,8 @@ protected:
   initMenus();
 
   /// Setup the toolbar and the tools in it.
-  void
-  initToolbars();
+  //void
+  //initToolbars();
 
   /// Check for unsaved changes, prompt to save config, etc.
   /**
@@ -413,8 +413,8 @@ protected:
   markRecentConfig(const std::string & path);
 
   /// Called by markRecentConfig().
-  void
-  updateRecentConfigMenu();
+  //void
+  //updateRecentConfigMenu();
 
   /// Loads custom panels from the given Config object.
   void
@@ -464,13 +464,13 @@ protected:
   std::string last_image_dir_;
   std::string home_dir_;
 
-  QMenu * file_menu_;
-  QMenu * recent_configs_menu_;
+  //QMenu * file_menu_;
+  //QMenu * recent_configs_menu_;
   QMenu * view_menu_;
-  QMenu * delete_view_menu_;
+  //QMenu * delete_view_menu_;
   QMenu * plugins_menu_;
 
-  QToolBar * toolbar_;
+  //QToolBar * toolbar_;
 
   VisualizationManager * manager_;
 
@@ -483,7 +483,7 @@ protected:
   typedef std::deque<std::string> D_string;
   D_string recent_configs_;
 
-  QActionGroup * toolbar_actions_;
+  //QActionGroup * toolbar_actions_;
   std::map<QAction *, Tool *> action_to_tool_map_;
   std::map<Tool *, QAction *> tool_to_action_map_;
   bool show_choose_new_master_option_;
@@ -524,7 +524,7 @@ protected:
   QString error_message_;
 
   /// Indicates if the toolbar should be visible outside of fullscreen mode.
-  bool toolbar_visible_;
+  //bool toolbar_visible_;
 
   ros_integration::RosNodeAbstractionIface::WeakPtr rviz_ros_node_;
 };
