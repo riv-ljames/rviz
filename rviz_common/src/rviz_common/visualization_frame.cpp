@@ -910,11 +910,12 @@ bool VisualizationFrame::prepareToExit()
   savePersistentSettings();
 
   QMessageBox box(this);
-  box.setText("Do you want to close the program?");
-  box.setStandardButtons(QMessageBox::Close | QMessageBox::Cancel);
-  box.setDefaultButton(QMessageBox::Cancel);
+  box.setText("Are you sure?");
+  box.setInformativeText("Do you want to exit NetShape?");
+  box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+  box.setDefaultButton(QMessageBox::No);
   int result = box.exec();
-  return result == QMessageBox::Close;
+  return result == QMessageBox::Yes;
 }
 
 void VisualizationFrame::onOpen()
