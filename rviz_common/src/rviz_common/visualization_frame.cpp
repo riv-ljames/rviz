@@ -910,7 +910,7 @@ bool VisualizationFrame::prepareToExit()
   savePersistentSettings();
 
   QMessageBox box(this);
-  box.setText("Do you want to exit?");
+  box.setText("Do you want to close the program?");
   box.setStandardButtons(QMessageBox::Close | QMessageBox::Cancel);
   box.setDefaultButton(QMessageBox::Cancel);
   int result = box.exec();
