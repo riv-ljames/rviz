@@ -909,45 +909,12 @@ bool VisualizationFrame::prepareToExit()
 
   savePersistentSettings();
 
-  if (isWindowModified()) {
-    QMessageBox box(this);
-    box.setText("There are unsaved changes.");
-    box.setInformativeText(QString::fromStdString("Save changes to " + display_config_file_ + "?"));
-    box.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    box.setDefaultButton(QMessageBox::Save);
-    int result = box.exec();
-    switch (result) {
-      case QMessageBox::Save:
-        if (saveDisplayConfig(QString::fromStdString(display_config_file_))) {
-          return true;
-        } else {
-          QMessageBox box(this);
-          box.setWindowTitle("Failed to save.");
-          box.setText(getErrorMessage());
-          box.setInformativeText(
-            QString::fromStdString(
-              "Save copy of " + display_config_file_ + " to another file?"));
-          box.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-          box.setDefaultButton(QMessageBox::Save);
-          int result = box.exec();
-          switch (result) {
-            case QMessageBox::Save:
-              onSaveAs();
-              return true;
-            case QMessageBox::Discard:
-              return true;
-            default:
-              return false;
-          }
-        }
-      case QMessageBox::Discard:
-        return true;
-      default:
-        return false;
-    }
-  } else {
-    return true;
-  }
+  QMessageBox box(this);
+  box.setText("Do you want to exit?");
+  box.setStandardButtons(QMessageBox::Close | QMessageBox::Cancel);
+  box.setDefaultButton(QMessageBox::Cancel);
+  int result = box.exec();
+  return result == QMessageBox::Exit;
 }
 
 void VisualizationFrame::onOpen()
