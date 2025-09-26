@@ -37,6 +37,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <iostream>
 
 #include <OgreRenderWindow.h>
 #include <OgreMeshManager.h>
@@ -910,14 +911,18 @@ bool VisualizationFrame::prepareToExit()
   savePersistentSettings();
 
   QMessageBox box(this);
-  box.setWindowTitle("Rivelin NetShape");
-  box.setText("Are you sure?");
-  box.setInformativeText("Do you want to exit NetShape?");
+  box.setWindowTitle("Rivelin Netshape");
+  box.setText("Do you want to close Netshape?");
+  box.setInformativeText("Ensure robot is in a safe state. Unsaved changes will be lost.");
   box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
   box.setDefaultButton(QMessageBox::No);
   box.setStyleSheet("QLabel{min-width: 456px;}");
   int result = box.exec();
-  return result == QMessageBox::Yes;
+  if (result == QMessageBox::Yes){
+    std::cout << "User requested Netshape to exit" << std::endl;
+    return true;
+  }
+  return false;
 }
 
 void VisualizationFrame::onOpen()
