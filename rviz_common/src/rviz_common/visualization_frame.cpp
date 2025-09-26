@@ -914,7 +914,7 @@ bool VisualizationFrame::prepareToExit()
   box.setStandardButtons(QMessageBox::Close | QMessageBox::Cancel);
   box.setDefaultButton(QMessageBox::Cancel);
   int result = box.exec();
-  return result == QMessageBox::Exit;
+  return result == QMessageBox::Close;
 }
 
 void VisualizationFrame::onOpen()
