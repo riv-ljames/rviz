@@ -910,10 +910,12 @@ bool VisualizationFrame::prepareToExit()
   savePersistentSettings();
 
   QMessageBox box(this);
+  box.setWindowTitle("Rivelin NetShape");
   box.setText("Are you sure?");
   box.setInformativeText("Do you want to exit NetShape?");
   box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
   box.setDefaultButton(QMessageBox::No);
+  box.setStyleSheet("QLabel{min-width: 456px;}");
   int result = box.exec();
   return result == QMessageBox::Yes;
 }
