@@ -137,11 +137,11 @@ VisualizationFrame::VisualizationFrame(
   QDir splash_path(QString::fromStdString(package_path_) + "/images/splash.png");
   splash_path_ = splash_path.absolutePath();
 
-  auto * reset_button = new QToolButton();
-  reset_button->setText("Reset");
-  reset_button->setContentsMargins(0, 0, 0, 0);
-  statusBar()->addPermanentWidget(reset_button, 0);
-  connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
+  //auto * reset_button = new QToolButton();
+  //reset_button->setText("Reset");
+  //reset_button->setContentsMargins(0, 0, 0, 0);
+  //statusBar()->addPermanentWidget(reset_button, 0);
+  //connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
 
   status_label_ = new QLabel("");
   statusBar()->addPermanentWidget(status_label_, 1);

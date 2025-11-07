@@ -240,13 +240,13 @@ void ViewController::handleKeyEvent(QKeyEvent * event, RenderPanel * panel)
     }
   }
 
-  if (event->key() == Qt::Key_Z) {
-    reset();
-  }
+  //if (event->key() == Qt::Key_Z) {
+  //  reset();
+  //}
 
-  if (event->key() == Qt::Key_R) {
-    resetTime();
-  }
+  //if (event->key() == Qt::Key_R) {
+  //  resetTime();
+  //}
 }
 
 void ViewController::resetService(
