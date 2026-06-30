@@ -746,7 +746,7 @@ void VisualizationFrame::setDisplayTitleFormat(const QString & title_format)
 void VisualizationFrame::setDisplayConfigFile(const std::string & path)
 {
   display_config_file_ = path;
-  std::string title = "Rivelin Netshape";
+  std::string title = "Rivelin Netshape | Hargible Edition";
 
   setWindowTitle(QString::fromStdString(title));
 }
