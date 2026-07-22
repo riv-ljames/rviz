@@ -543,8 +543,12 @@ void VisualizationFrame::hideDockImpl(Qt::DockWidgetArea area, bool hide)
     if (area == curr_area) {
       (*it)->setCollapsed(hide);
     }
-    // Docking is disabled (all panels float), so never touch allowedAreas here —
-    // re-enabling an area would undo the NoDockWidgetArea set in addPane.
+    // allow/disallow docking to this area for all widgets
+    if (hide) {
+      (*it)->setAllowedAreas((*it)->allowedAreas() & ~area);
+    } else {
+      (*it)->setAllowedAreas((*it)->allowedAreas() | area);
+    }
   }
 }
 
@@ -812,13 +816,6 @@ void VisualizationFrame::loadWindowGeometry(const Config & config)
 
   // load panel dock widget states (collapsed or not)
   QList<PanelDockWidget *> dock_widgets = findChildren<PanelDockWidget *>();
-
-  // restoreState() above may re-dock panels saved from an older layout; force every
-  // panel back to floating so docking stays disabled regardless of saved config.
-  for (PanelDockWidget * dock : dock_widgets) {
-    dock->setAllowedAreas(Qt::NoDockWidgetArea);
-    dock->setFloating(true);
-  }
 
   for (QList<PanelDockWidget *>::iterator it = dock_widgets.begin(); it != dock_widgets.end();
     it++)
@@ -1236,14 +1233,9 @@ PanelDockWidget * VisualizationFrame::addPane(
   PanelDockWidget * dock;
   dock = new PanelDockWidget(name);
   dock->setContentWidget(panel);
+  dock->setFloating(floating);
   dock->setObjectName(name);   // QMainWindow::saveState() needs objectName to be set.
-  // Disable docking entirely: panels must always be free-floating windows and never
-  // snap into the QMainWindow dock layout. NoDockWidgetArea stops drag-to-dock; the
-  // setFloating(true) below (after addDockWidget, which always docks) pops it out.
-  dock->setAllowedAreas(Qt::NoDockWidgetArea);
   addDockWidget(area, dock);
-  dock->setFloating(true);
-  (void) floating;
 
   // we want to know when that panel becomes visible
   connect(dock, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockPanelVisibilityChange(bool)));
