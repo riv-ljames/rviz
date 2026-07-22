@@ -805,17 +805,16 @@ void VisualizationFrame::loadWindowGeometry(const Config & config)
     resize(width, height);
   }
 
-  // Docking is disabled: deliberately DO NOT restoreState() the saved "QMainWindow State"
-  // blob. That blob (see default.rviz) encodes the old docked layout and would re-dock
-  // every panel by objectName, which no amount of post-hoc setFloating() reliably undoes
-  // because Qt defers the dock relayout. Panels are already created floating in addPane(),
-  // so there is nothing to restore.
+  QString main_window_config;
+  if (config.mapGetString("QMainWindow State", &main_window_config)) {
+    restoreState(QByteArray::fromHex(qPrintable(main_window_config)));
+  }
 
   // load panel dock widget states (collapsed or not)
   QList<PanelDockWidget *> dock_widgets = findChildren<PanelDockWidget *>();
 
-  // Belt-and-suspenders: panels are created floating in addPane(); reassert it here so
-  // docking stays disabled regardless of saved config.
+  // restoreState() above may re-dock panels saved from an older layout; force every
+  // panel back to floating so docking stays disabled regardless of saved config.
   for (PanelDockWidget * dock : dock_widgets) {
     dock->setAllowedAreas(Qt::NoDockWidgetArea);
     dock->setFloating(true);
