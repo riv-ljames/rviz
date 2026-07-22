@@ -375,12 +375,6 @@ void VisualizationManager::onUpdate()
 
   if (frame_update_timer_ > 1.0f) {
     frame_update_timer_ = 0.0f;
-
-    // DEBUG(dt-units-fix): logged at ~1 Hz. wall_dt should read ~0.033 s at 30 FPS. If it reads
-    // ~3e7 the nanosecond bug is back; if it reads ~1.0 the 1 Hz throttle gate is doing its job.
-    RVIZ_COMMON_LOG_INFO_STREAM(
-      "[rviz dt-debug] wall_dt=" << wall_dt << "s ros_dt=" << ros_dt << "s (this line ~1 Hz)");
-
     updateFrames();
   }
 
