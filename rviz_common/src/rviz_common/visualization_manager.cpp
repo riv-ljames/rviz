@@ -337,9 +337,13 @@ void VisualizationManager::onUpdate()
 {
   const auto wall_now = std::chrono::system_clock::now();
   const auto wall_diff = wall_now - last_update_wall_time_;
-  const uint64_t wall_dt = std::chrono::duration_cast<std::chrono::nanoseconds>(wall_diff).count();
+  // wall_dt and ros_dt are in SECONDS — this is the contract the rviz Display API and all
+  // downstream throttles assume. They were previously computed in nanoseconds (uint64), which
+  // silently defeated every seconds-based comparison: updateTime()/updateFrames() ran every tick
+  // instead of at 10 Hz/1 Hz, and MoveIt's scene-render coalescing never engaged. Keep as seconds.
+  const double wall_dt = std::chrono::duration<double>(wall_diff).count();
   const auto ros_now = clock_->now();
-  const uint64_t ros_dt = ros_now.nanoseconds() - last_update_ros_time_.nanoseconds();
+  const double ros_dt = (ros_now - last_update_ros_time_).seconds();
   last_update_ros_time_ = ros_now;
   last_update_wall_time_ = wall_now;
 
@@ -371,6 +375,11 @@ void VisualizationManager::onUpdate()
 
   if (frame_update_timer_ > 1.0f) {
     frame_update_timer_ = 0.0f;
+
+    // DEBUG(dt-units-fix): logged at ~1 Hz. wall_dt should read ~0.033 s at 30 FPS. If it reads
+    // ~3e7 the nanosecond bug is back; if it reads ~1.0 the 1 Hz throttle gate is doing its job.
+    RVIZ_COMMON_LOG_INFO_STREAM(
+      "[rviz dt-debug] wall_dt=" << wall_dt << "s ros_dt=" << ros_dt << "s (this line ~1 Hz)");
 
     updateFrames();
   }
